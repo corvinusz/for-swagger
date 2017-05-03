@@ -33,7 +33,9 @@ type ResponseBody struct {
 //	schemes: http
 //
 //	responses:
-//		200: versionResponse
+//		200:
+//			$ref: #/definitions/versionModel
+//
 func (h *Handler) GetVersion(c echo.Context) error {
 	response := ResponseBody{
 		Result:     "OK",
