@@ -1,13 +1,16 @@
 # For Swagger
 Special repo for testing swagger docs generation
 
-https://github.com/labstack/echo as web server
+https://github.com/labstack/echo as web server and
+
 https://github.com/go-xorm/xorm as a database ORM
 
 # Installation
 ## Dependencies
 There is still no vendoring here. Waiting for https://github.com/golang/dep
+
 So ...
+
 ```bash
 go get -u github.com/BurntSushi/toml
 go get -u github.com/labstack/echo
@@ -25,7 +28,7 @@ Hope that nothing is missed.
 
 ## Application
 ```bash
-go install github.com/corvinusy/for-swagger
+go install github.com/corvinusz/for-swagger
 ```
 
 ## Database
