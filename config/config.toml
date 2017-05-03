@@ -1,0 +1,11 @@
+title = "for-swagger Web Application Configuration"
+
+secret = "supersecret"
+# PORT for web-API
+port = "11011" # default "11011"
+
+[database]
+# TYPE of database
+db = "sqlite3"
+# DATA SOURCE NAME
+dsn = "/tmp/forswagger.sqlite.db"

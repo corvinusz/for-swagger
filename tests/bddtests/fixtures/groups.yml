@@ -1,0 +1,20 @@
+-
+    id: 1
+    created: 1459096113
+    updated: 1459096113
+    name: admins
+-
+    id: 4
+    created: 1459096113
+    updated: 1459096113
+    name: guests
+-
+    id: 5
+    created: 1459096113
+    updated: 1459096113
+    name: banned
+-
+    id: 10
+    created: 1459096113
+    updated: 1459096113
+    name: operators

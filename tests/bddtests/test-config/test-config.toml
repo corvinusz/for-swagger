@@ -1,0 +1,12 @@
+title = "For-swagger Test Configuration File"
+
+secret = "supersecret"
+# PORT for web-API
+# test-app and main-app better should use different ports to avoid conflicts
+port = "11033" # default "11011"
+
+[database]
+# TYPE of database
+db = "sqlite3"
+# DATA SOURCE NAME
+dsn = "/tmp/forswagger-test.sqlite.db"
