@@ -15,7 +15,7 @@ type Handler struct {
 }
 
 // ResponseBody defines response body on GET /version
-// swagger:model
+// swagger:model versionModel
 type ResponseBody struct {
 	Result     string `json:"result"`
 	Version    string `json:"version"`
@@ -33,7 +33,7 @@ type ResponseBody struct {
 //	schemes: http
 //
 //	responses:
-//		200: Response
+//		200: versionResponse
 func (h *Handler) GetVersion(c echo.Context) error {
 	response := ResponseBody{
 		Result:     "OK",

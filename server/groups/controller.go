@@ -29,17 +29,6 @@ type reqParams struct {
 }
 
 // GetGroups is a GET /groups handler
-/* overcommented // swagger:route GET /groups groups GetGroups
-//
-// Returns user groups
-//
-// 	produces:
-// 		- application/json
-//
-// 	schemes: http
-//
-// 	responses:
-// 		200: Response*/
 func (h *Handler) GetGroups(c echo.Context) error {
 	// parse parameters
 	params, err := h.getReqParams(c)
