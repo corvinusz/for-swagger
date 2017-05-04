@@ -24,9 +24,9 @@ type ResponseBody struct {
 	ServerTime int64  `json:"server_time"`
 }
 
-// VersionResponseEnvelop is a wrapper
+// versionResponse is a wrapper
 // swagger:response
-type VersionResponseEnvelop struct {
+type versionResponse struct {
 	// Version Response
 	// in: body
 	Body *ResponseBody
@@ -38,7 +38,7 @@ type VersionResponseEnvelop struct {
 // Returns server version and time.
 //
 // responses:
-//		200: VersionResponseEnvelop
+//		200: versionResponse
 func (h *Handler) GetVersion(c echo.Context) error {
 	response := ResponseBody{
 		Result:     "OK",
