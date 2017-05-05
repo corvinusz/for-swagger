@@ -11,7 +11,7 @@ import (
 	"github.com/corvinusz/for-swagger/ctx"
 )
 
-// Handler is a application context carrier
+// Handler is an application context carrier
 type Handler struct {
 	C *ctx.Context
 }
@@ -24,21 +24,23 @@ type ResponseBody struct {
 	ServerTime int64  `json:"server_time"`
 }
 
-// versionResponse is a wrapper
+// OK response
 // swagger:response
 type versionResponse struct {
-	// Version Response
+	// response OK
 	// in: body
 	Body *ResponseBody
 }
 
 // GetVersion is a GET /version handler
-// swagger:route GET /version GetVersion
+// swagger:route GET /version version GetVersion
 //
-// Returns server version and time.
+// Version Response
 //
 // responses:
 //		200: versionResponse
+//
+//		default: echoHTTPErrorResponse
 func (h *Handler) GetVersion(c echo.Context) error {
 	response := ResponseBody{
 		Result:     "OK",
