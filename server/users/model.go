@@ -1,3 +1,5 @@
+// Package users ...
+// swagger:meta
 package users
 
 import (
@@ -11,7 +13,8 @@ import (
 	"github.com/corvinusz/for-swagger/server/groups"
 )
 
-// Entity represents user entity
+// Entity represents user
+// swagger:model userEntity
 type Entity struct {
 	ID       uint64        `json:"id" xorm:"'id' pk index autoincr"`
 	Created  uint64        `json:"created" xorm:"'created'"`

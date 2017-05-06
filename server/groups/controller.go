@@ -1,3 +1,5 @@
+// Package groups ...
+// swagger:meta
 package groups
 
 import (
@@ -14,18 +16,21 @@ type Handler struct {
 	C *ctx.Context
 }
 
-// Response defines http response on GET /groups
-type Response struct {
-	Groups  []Entity
-	Remains uint64
+// swagger:parameters GetGroups
+//in:query
+type reqParams struct {
+	Limit  uint64 `json:"limit"`
+	Offset uint64 `json:"offset"`
+	ID     uint64 `json:"id"`
+	Name   string `json:"name"`
 }
 
-// http request query string parameters
-type reqParams struct {
-	Limit  uint64
-	Offset uint64
-	ID     uint64
-	Name   string
+// http response on GET /groups
+// swagger:response getGroupsResponse
+type getGroupsResponse struct {
+	// response OK
+	// in: body
+	Groups []Entity
 }
 
 // GetGroups is a GET /groups handler

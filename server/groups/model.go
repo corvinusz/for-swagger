@@ -1,3 +1,5 @@
+// Package groups ...
+// swagger:meta
 package groups
 
 import (
@@ -8,8 +10,8 @@ import (
 	"github.com/go-xorm/xorm"
 )
 
-// Entity represents entity
-// swagger:model
+// Entity represents group
+// swagger:model groupEntity
 type Entity struct {
 	ID      uint64 `json:"id" xorm:"'id' pk index autoincr"`
 	Created uint64 `json:"created" xorm:"'created'"`

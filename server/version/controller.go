@@ -24,7 +24,7 @@ type ResponseBody struct {
 	ServerTime int64  `json:"server_time"`
 }
 
-// OK response
+// http response on GET /version
 // swagger:response
 type versionResponse struct {
 	// response OK

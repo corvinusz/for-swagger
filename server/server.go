@@ -62,6 +62,14 @@ func (s *Server) Start() {
 	e.GET("/", versionHandler.GetVersion)
 	e.GET("/version", versionHandler.GetVersion)
 	// groups
+	// swagger:route GET /groups groups GetGroups
+	//
+	// Groups response
+	//
+	// responses:
+	//		200: getGroupsResponse
+	//
+	//		default: echoHTTPErrorResponse
 	e.GET("/groups", groupsHandler.GetGroups)
 	// users
 	e.POST("/users", usersHandler.CreateUser)

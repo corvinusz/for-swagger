@@ -1,3 +1,5 @@
+// Package users ...
+// swagger:meta
 package users
 
 import (
@@ -20,6 +22,7 @@ type Input struct {
 }
 
 // http request query string parameters
+// swagger:parameters GetUsers
 type reqParams struct {
 	Limit   uint64
 	Offset  uint64
@@ -34,7 +37,23 @@ type Handler struct {
 	C *ctx.Context
 }
 
+// http response on GET /users
+// swagger:response getUsersResponse
+type getUsersResponse struct {
+	// response OK
+	// in: body
+	Users []Entity
+}
+
 // GetUsers is a GET /users handler
+// swagger:route GET /users users GetUsers
+//
+// Users response
+//
+// responses:
+//		200: getUsersResponse
+//
+//		default: echoHTTPErrorResponse
 func (h *Handler) GetUsers(c echo.Context) error {
 	// parse parameters
 	params, err := h.getReqParams(c)
@@ -49,7 +68,23 @@ func (h *Handler) GetUsers(c echo.Context) error {
 	return c.JSON(http.StatusOK, users)
 }
 
+// http response on POST /users
+// swagger:response postUsersResponse
+type postUsersResponse struct {
+	// response OK
+	// in: body
+	User Entity
+}
+
 // CreateUser is a POST /users handler
+// swagger:route POST /users users CreateUser
+//
+// Users response
+//
+// responses:
+//		200: postUsersResponse
+//
+//		default: echoHTTPErrorResponse
 func (h *Handler) CreateUser(c echo.Context) error {
 	var (
 		status int
@@ -87,7 +122,23 @@ func (h *Handler) CreateUser(c echo.Context) error {
 	return c.JSON(status, user)
 }
 
+// http response on PUT /users
+// swagger:response putUsersResponse
+type putUsersResponse struct {
+	// response OK
+	// in: body
+	User Entity
+}
+
 // PutUser is a PUT /users/{id} handler
+// swagger:route PUT /users users PutUser
+//
+// Users response
+//
+// responses:
+//		200: putUsersResponse
+//
+//		default: echoHTTPErrorResponse
 func (h *Handler) PutUser(c echo.Context) error {
 	var (
 		input  Input
@@ -122,6 +173,14 @@ func (h *Handler) PutUser(c echo.Context) error {
 }
 
 // DeleteUser is a DELETE /users/{id} handler
+// swagger:route DELETE /users users DeleteUser
+//
+// Users response
+//
+// responses:
+//		200: echoOKResponse
+//
+//		default: echoHTTPErrorResponse
 func (h *Handler) DeleteUser(c echo.Context) error {
 	var (
 		id     uint64
