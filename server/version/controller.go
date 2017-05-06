@@ -33,14 +33,6 @@ type versionResponse struct {
 }
 
 // GetVersion is a GET /version handler
-// swagger:route GET /version version GetVersion
-//
-// Version Response
-//
-// responses:
-//		200: versionResponse
-//
-//		default: echoHTTPErrorResponse
 func (h *Handler) GetVersion(c echo.Context) error {
 	response := ResponseBody{
 		Result:     "OK",

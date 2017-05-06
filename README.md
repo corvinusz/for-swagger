@@ -34,5 +34,14 @@ go install github.com/corvinusz/for-swagger
 ## Database
 Currently is using *sqlite3*-database, located in file /tmp/for-swagger.sqlite.db
 
-#License
+# Documentation
+Generating from source code by go-swagger
+```bash
+go get github.com/go-swagger/go-swagger
+cd $GOPATH/src/github.com/corvinusz/for-swagger/server
+swagger generate spec -o ./swagger.json && swagger validate ./swagger.json
+swagger serve ./swagger.json
+```
+
+# License
 MIT

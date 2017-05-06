@@ -21,20 +21,20 @@ type Input struct {
 	GroupID       uint64 `json:"group_id"`
 }
 
-// http request query string parameters
-// swagger:parameters GetUsers
-type reqParams struct {
-	Limit   uint64
-	Offset  uint64
-	ID      uint64
-	GroupID uint64
-	Login   string
-	Email   string
-}
-
 // Handler is a container for handlers and app data
 type Handler struct {
 	C *ctx.Context
+}
+
+//------------------------------------------------------------------------------
+// swagger:parameters GetUsers
+type reqParams struct {
+	Limit   uint64 `json:"limit"`
+	Offset  uint64 `json:"offset"`
+	ID      uint64 `json:"id"`
+	GroupID uint64 `json:"group_id"`
+	Login   string `json:"login"`
+	Email   string `json:"email"`
 }
 
 // http response on GET /users
@@ -46,14 +46,6 @@ type getUsersResponse struct {
 }
 
 // GetUsers is a GET /users handler
-// swagger:route GET /users users GetUsers
-//
-// Users response
-//
-// responses:
-//		200: getUsersResponse
-//
-//		default: echoHTTPErrorResponse
 func (h *Handler) GetUsers(c echo.Context) error {
 	// parse parameters
 	params, err := h.getReqParams(c)
@@ -68,6 +60,7 @@ func (h *Handler) GetUsers(c echo.Context) error {
 	return c.JSON(http.StatusOK, users)
 }
 
+//------------------------------------------------------------------------------
 // http response on POST /users
 // swagger:response postUsersResponse
 type postUsersResponse struct {
@@ -77,14 +70,6 @@ type postUsersResponse struct {
 }
 
 // CreateUser is a POST /users handler
-// swagger:route POST /users users CreateUser
-//
-// Users response
-//
-// responses:
-//		200: postUsersResponse
-//
-//		default: echoHTTPErrorResponse
 func (h *Handler) CreateUser(c echo.Context) error {
 	var (
 		status int
@@ -122,6 +107,7 @@ func (h *Handler) CreateUser(c echo.Context) error {
 	return c.JSON(status, user)
 }
 
+//------------------------------------------------------------------------------
 // http response on PUT /users
 // swagger:response putUsersResponse
 type putUsersResponse struct {
@@ -131,14 +117,6 @@ type putUsersResponse struct {
 }
 
 // PutUser is a PUT /users/{id} handler
-// swagger:route PUT /users users PutUser
-//
-// Users response
-//
-// responses:
-//		200: putUsersResponse
-//
-//		default: echoHTTPErrorResponse
 func (h *Handler) PutUser(c echo.Context) error {
 	var (
 		input  Input
@@ -172,15 +150,9 @@ func (h *Handler) PutUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, user)
 }
 
+//------------------------------------------------------------------------------
+
 // DeleteUser is a DELETE /users/{id} handler
-// swagger:route DELETE /users users DeleteUser
-//
-// Users response
-//
-// responses:
-//		200: echoOKResponse
-//
-//		default: echoHTTPErrorResponse
 func (h *Handler) DeleteUser(c echo.Context) error {
 	var (
 		id     uint64
