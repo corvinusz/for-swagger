@@ -32,7 +32,7 @@ func (e *Entity) TableName() string {
 }
 
 // FindByParams users in database
-func FindByParams(orm *xorm.Engine, params *reqParams) ([]Entity, error) {
+func FindByParams(orm *xorm.Engine, params *getUsersParams) ([]Entity, error) {
 	var (
 		users []Entity
 		err   error

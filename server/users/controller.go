@@ -12,6 +12,11 @@ import (
 	"github.com/corvinusz/for-swagger/utils"
 )
 
+// Handler is a container for handlers and app data
+type Handler struct {
+	C *ctx.Context
+}
+
 // Input represents payload data format
 type Input struct {
 	Login         string `json:"login"`
@@ -21,14 +26,17 @@ type Input struct {
 	GroupID       uint64 `json:"group_id"`
 }
 
-// Handler is a container for handlers and app data
-type Handler struct {
-	C *ctx.Context
+// swagger:parameters CreateUser
+type postUsersParams struct {
+	//in:body
+	Body *Input
 }
 
 //------------------------------------------------------------------------------
+// really not a json: json tags used for documenting query params
 // swagger:parameters GetUsers
-type reqParams struct {
+// in:query
+type getUsersParams struct {
 	Limit   uint64 `json:"limit"`
 	Offset  uint64 `json:"offset"`
 	ID      uint64 `json:"id"`
@@ -37,7 +45,7 @@ type reqParams struct {
 	Email   string `json:"email"`
 }
 
-// http response on GET /users
+// GET /users response
 // swagger:response getUsersResponse
 type getUsersResponse struct {
 	// response OK
@@ -46,9 +54,17 @@ type getUsersResponse struct {
 }
 
 // GetUsers is a GET /users handler
+// swagger:operation GET /users users GetUsers
+//
+// Returns users list
+//
+// ---
+// responses:
+//   '200':
+//     "$ref": "#/responses/getUsersResponse"
 func (h *Handler) GetUsers(c echo.Context) error {
 	// parse parameters
-	params, err := h.getReqParams(c)
+	params, err := h.getQueryParams(c)
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
@@ -70,6 +86,14 @@ type postUsersResponse struct {
 }
 
 // CreateUser is a POST /users handler
+// swagger:operation POST /users users CreateUser
+//
+// Create new user and save it in storage
+//
+// ---
+// responses:
+//   '200':
+//     "$ref": "#/responses/postUsersResponse"
 func (h *Handler) CreateUser(c echo.Context) error {
 	var (
 		status int
@@ -108,7 +132,15 @@ func (h *Handler) CreateUser(c echo.Context) error {
 }
 
 //------------------------------------------------------------------------------
-// http response on PUT /users
+// swagger:parameters PutUser
+type putUsersParams struct {
+	//in:path
+	ID uint64
+	//in:body
+	Body *Input
+}
+
+// PUT /users response
 // swagger:response putUsersResponse
 type putUsersResponse struct {
 	// response OK
@@ -116,7 +148,15 @@ type putUsersResponse struct {
 	User Entity
 }
 
-// PutUser is a PUT /users/{id} handler
+// PutUser is a PUT /users/{ID} handler
+// swagger:operation PUT /users/{ID} users PutUser
+//
+// Update user by id
+//
+// ---
+// responses:
+//   '200':
+//     "$ref": "#/responses/putUsersResponse"
 func (h *Handler) PutUser(c echo.Context) error {
 	var (
 		input  Input
@@ -151,8 +191,13 @@ func (h *Handler) PutUser(c echo.Context) error {
 }
 
 //------------------------------------------------------------------------------
+// swagger:parameters DeleteUser
+type deleteUsersParams struct {
+	//in:path
+	ID uint64
+}
 
-// DeleteUser is a DELETE /users/{id} handler
+// DeleteUser is a DELETE /users/{ID} handler
 func (h *Handler) DeleteUser(c echo.Context) error {
 	var (
 		id     uint64
@@ -176,10 +221,10 @@ func (h *Handler) DeleteUser(c echo.Context) error {
 }
 
 //------------------------------------------------------------------------------
-func (h *Handler) getReqParams(c echo.Context) (*reqParams, error) {
+func (h *Handler) getQueryParams(c echo.Context) (*getUsersParams, error) {
 	var err error
 	qs := c.QueryParams()
-	params := new(reqParams)
+	params := new(getUsersParams)
 	// get id
 	params.ID, err = utils.GetUintParamFromURL(qs, "id", 0)
 	if err != nil {

@@ -25,7 +25,7 @@ type reqParams struct {
 	Name   string `json:"name"`
 }
 
-// http response on GET /groups
+// GET /groups response
 // swagger:response getGroupsResponse
 type getGroupsResponse struct {
 	// response OK
@@ -34,6 +34,14 @@ type getGroupsResponse struct {
 }
 
 // GetGroups is a GET /groups handler
+// swagger:operation GET /groups groups GetGroups
+//
+// Returns groups list
+//
+// ---
+// responses:
+//   '200':
+//     "$ref": "#/responses/getGroupsResponse"
 func (h *Handler) GetGroups(c echo.Context) error {
 	// parse parameters
 	params, err := h.getReqParams(c)

@@ -62,62 +62,33 @@ func (s *Server) Start() {
 	e.GET("/", versionHandler.GetVersion)
 
 	// swagger:route GET /version version GetVersion
-	//
-	// Version Response
-	//
 	// responses:
-	//		200: versionResponse
-	//
 	//		default: echoHTTPErrorResponse
 	e.GET("/version", versionHandler.GetVersion)
 
 	// swagger:route GET /groups groups GetGroups
-	//
-	// Groups response
-	//
 	// responses:
-	//		200: getGroupsResponse
-	//
 	//		default: echoHTTPErrorResponse
 	e.GET("/groups", groupsHandler.GetGroups)
 
 	// swagger:route POST /users users CreateUser
-	//
-	// Users response
-	//
 	// responses:
-	//		200: postUsersResponse
-	//
 	//		default: echoHTTPErrorResponse
 	e.POST("/users", usersHandler.CreateUser)
 
 	// swagger:route GET /users users GetUsers
-	//
-	// Users response
-	//
 	// responses:
-	//		200: getUsersResponse
-	//
 	//		default: echoHTTPErrorResponse
 	e.GET("/users", usersHandler.GetUsers)
 
-	// swagger:route PUT /users users PutUser
-	//
-	// Users response
-	//
+	// swagger:route PUT /users/{ID} users PutUser
 	// responses:
-	//		200: putUsersResponse
-	//
 	//		default: echoHTTPErrorResponse
 	e.PUT("/users/:id", usersHandler.PutUser)
 
-	// swagger:route DELETE /users users DeleteUser
-	//
-	// Users response
-	//
+	// swagger:route DELETE /users/{ID} users DeleteUser
 	// responses:
 	//		200: echoOKResponse
-	//
 	//		default: echoHTTPErrorResponse
 	e.DELETE("/users/:id", usersHandler.DeleteUser)
 

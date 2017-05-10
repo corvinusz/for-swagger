@@ -16,25 +16,31 @@ type Handler struct {
 	C *ctx.Context
 }
 
-// ResponseBody defines response body on GET /version
-type ResponseBody struct {
-	// Response Body
+// GetVersionBody on GET /version
+type GetVersionBody struct {
 	Result     string `json:"result"`
 	Version    string `json:"version"`
 	ServerTime int64  `json:"server_time"`
 }
 
-// http response on GET /version
-// swagger:response
+// GET /version response
+// swagger:response getVersionResponse
 type versionResponse struct {
-	// response OK
 	// in: body
-	Body *ResponseBody
+	Body *GetVersionBody
 }
 
 // GetVersion is a GET /version handler
+// swagger:operation GET /version version GetVersion
+//
+// Returns server version
+//
+// ---
+// responses:
+//   '200':
+//     "$ref": "#/responses/getVersionResponse"
 func (h *Handler) GetVersion(c echo.Context) error {
-	response := ResponseBody{
+	response := GetVersionBody{
 		Result:     "OK",
 		Version:    h.C.Config.Version,
 		ServerTime: time.Now().UTC().Unix(),

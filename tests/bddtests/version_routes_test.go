@@ -10,7 +10,7 @@ import (
 var _ = Describe("Test /version", func() {
 	Context("GET /version", func() {
 		It("should respond properly", func() {
-			result := new(version.ResponseBody)
+			result := new(version.GetVersionBody)
 			resp, err := suite.client.R().SetResult(result).Get("/version")
 			Expect(err).NotTo(HaveOccurred())
 			Expect(resp.StatusCode()).To(Equal(200))
