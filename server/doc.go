@@ -16,7 +16,7 @@ type echoHTTPErrorResponse struct {
 	Body errorMessage
 }
 
-// OK response without any content
+// OK response (No content)
 //swagger:response
 type echoOKResponse struct {
 }

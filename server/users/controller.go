@@ -26,12 +26,6 @@ type Input struct {
 	GroupID       uint64 `json:"group_id"`
 }
 
-// swagger:parameters CreateUser
-type postUsersParams struct {
-	//in:body
-	Body *Input
-}
-
 //------------------------------------------------------------------------------
 // really not a json: json tags used for documenting query params
 // swagger:parameters GetUsers
@@ -45,10 +39,9 @@ type getUsersParams struct {
 	Email   string `json:"email"`
 }
 
-// GET /users response
+// OK response
 // swagger:response getUsersResponse
 type getUsersResponse struct {
-	// response OK
 	// in: body
 	Users []Entity
 }
@@ -77,10 +70,15 @@ func (h *Handler) GetUsers(c echo.Context) error {
 }
 
 //------------------------------------------------------------------------------
-// http response on POST /users
+// swagger:parameters CreateUser
+type postUsersParams struct {
+	//in:body
+	Body *Input
+}
+
+// CREATED response
 // swagger:response postUsersResponse
 type postUsersResponse struct {
-	// response OK
 	// in: body
 	User Entity
 }
@@ -92,7 +90,7 @@ type postUsersResponse struct {
 //
 // ---
 // responses:
-//   '200':
+//   '201':
 //     "$ref": "#/responses/postUsersResponse"
 func (h *Handler) CreateUser(c echo.Context) error {
 	var (
@@ -140,10 +138,9 @@ type putUsersParams struct {
 	Body *Input
 }
 
-// PUT /users response
+// OK response
 // swagger:response putUsersResponse
 type putUsersResponse struct {
-	// response OK
 	// in: body
 	User Entity
 }

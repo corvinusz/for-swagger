@@ -18,17 +18,16 @@ type Handler struct {
 
 // swagger:parameters GetGroups
 //in:query
-type reqParams struct {
+type getGroupParams struct {
 	Limit  uint64 `json:"limit"`
 	Offset uint64 `json:"offset"`
 	ID     uint64 `json:"id"`
 	Name   string `json:"name"`
 }
 
-// GET /groups response
+// OK response
 // swagger:response getGroupsResponse
 type getGroupsResponse struct {
-	// response OK
 	// in: body
 	Groups []Entity
 }
@@ -44,7 +43,7 @@ type getGroupsResponse struct {
 //     "$ref": "#/responses/getGroupsResponse"
 func (h *Handler) GetGroups(c echo.Context) error {
 	// parse parameters
-	params, err := h.getReqParams(c)
+	params, err := h.getParams(c)
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
@@ -57,10 +56,10 @@ func (h *Handler) GetGroups(c echo.Context) error {
 }
 
 //------------------------------------------------------------------------------
-func (h *Handler) getReqParams(c echo.Context) (*reqParams, error) {
+func (h *Handler) getParams(c echo.Context) (*getGroupParams, error) {
 	var err error
 	qs := c.QueryParams()
-	params := new(reqParams)
+	params := new(getGroupParams)
 	// get id
 	params.ID, err = utils.GetUintParamFromURL(qs, "id", 0)
 	if err != nil {

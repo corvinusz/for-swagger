@@ -26,7 +26,7 @@ func (e *Entity) TableName() string {
 }
 
 // FindByParams groups that matches params
-func FindByParams(orm *xorm.Engine, params *reqParams) ([]Entity, error) {
+func FindByParams(orm *xorm.Engine, params *getGroupParams) ([]Entity, error) {
 	var (
 		groups []Entity
 		err    error
