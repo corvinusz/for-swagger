@@ -1,6 +1,20 @@
 // Package server ...
+// Schemes: http
+// Host: localhost:11011
+// BasePath: /
+// Version: 0.0.1
+// License: MIT
+// Contact: Marat Kagarmanov<mz3corvinus@gmail.com>
+// Consumes:
+// - application/json
+//
+// Produces:
+// - application/json
+//
 // swagger:meta
 package server
+
+// Generic responses for framework
 
 type errorMessage struct {
 	// Error message

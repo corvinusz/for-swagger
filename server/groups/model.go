@@ -1,5 +1,3 @@
-// Package groups ...
-// swagger:meta
 package groups
 
 import (
@@ -20,12 +18,12 @@ type Entity struct {
 	Note    string `json:"note"`
 }
 
-// TableName used by xorm to set table name for entity
+// TableName is used by xorm to set a table name for this entity
 func (e *Entity) TableName() string {
 	return "groups"
 }
 
-// FindByParams groups that matches params
+// FindByParams return groups that matches params
 func FindByParams(orm *xorm.Engine, params *getGroupParams) ([]Entity, error) {
 	var (
 		groups []Entity

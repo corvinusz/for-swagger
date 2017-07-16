@@ -1,5 +1,4 @@
 // Package users ...
-// swagger:meta
 package users
 
 import (
@@ -17,8 +16,8 @@ type Handler struct {
 	C *ctx.Context
 }
 
-// Input represents payload data format
-type Input struct {
+// UserInput represents payload data format
+type UserInput struct {
 	Login         string `json:"login"`
 	Password      string `json:"password"`
 	Email         string `json:"email"`
@@ -39,13 +38,6 @@ type getUsersParams struct {
 	Email   string `json:"email"`
 }
 
-// OK response
-// swagger:response getUsersResponse
-type getUsersResponse struct {
-	// in: body
-	Users []Entity
-}
-
 // GetUsers is a GET /users handler
 // swagger:operation GET /users users GetUsers
 //
@@ -53,8 +45,12 @@ type getUsersResponse struct {
 //
 // ---
 // responses:
-//   '200':
-//     "$ref": "#/responses/getUsersResponse"
+//   200:
+//     description: returns array of users
+//     schema:
+//       type: array
+//       items:
+//         $ref: '#/definitions/userEntity'
 func (h *Handler) GetUsers(c echo.Context) error {
 	// parse parameters
 	params, err := h.getQueryParams(c)
@@ -73,14 +69,7 @@ func (h *Handler) GetUsers(c echo.Context) error {
 // swagger:parameters CreateUser
 type postUsersParams struct {
 	//in:body
-	Body *Input
-}
-
-// CREATED response
-// swagger:response postUsersResponse
-type postUsersResponse struct {
-	// in: body
-	User Entity
+	Body *UserInput
 }
 
 // CreateUser is a POST /users handler
@@ -90,14 +79,16 @@ type postUsersResponse struct {
 //
 // ---
 // responses:
-//   '201':
-//     "$ref": "#/responses/postUsersResponse"
+//   201:
+//     description: return created user
+//     schema:
+//       $ref: '#/definitions/userEntity'
 func (h *Handler) CreateUser(c echo.Context) error {
 	var (
 		status int
 		err    error
 		user   Entity
-		input  Input
+		input  UserInput
 	)
 
 	if err = c.Bind(&input); err != nil {
@@ -135,28 +126,23 @@ type putUsersParams struct {
 	//in:path
 	ID uint64
 	//in:body
-	Body *Input
-}
-
-// OK response
-// swagger:response putUsersResponse
-type putUsersResponse struct {
-	// in: body
-	User Entity
+	Body *UserInput
 }
 
 // PutUser is a PUT /users/{ID} handler
 // swagger:operation PUT /users/{ID} users PutUser
 //
-// Update user by id
+// Update user by ID and save user in the storage
 //
 // ---
 // responses:
-//   '200':
-//     "$ref": "#/responses/putUsersResponse"
+//   200:
+//     description: return updated user
+//     schema:
+//       $ref: '#/definitions/userEntity'
 func (h *Handler) PutUser(c echo.Context) error {
 	var (
-		input  Input
+		input  UserInput
 		user   Entity
 		id     uint64
 		err    error

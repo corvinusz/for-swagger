@@ -1,5 +1,3 @@
-// Package users ...
-// swagger:meta
 package users
 
 import (

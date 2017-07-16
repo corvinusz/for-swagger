@@ -1,18 +1,3 @@
-// Package server Example of RESTful-server with swagger documentation
-//
-// The purpose of this application is to provide an exampe of API documentation
-//
-// Terms Of Service:
-//
-// there are no TOS at this moment, use at your own risk we take no responsibility
-//
-// Schemes: http
-// Host: localhost:11011
-// BasePath: /
-// Version: 0.0.1
-// License: MIT
-// Contact: Marat Kagarmanov<mz3corvinus@gmail.com>
-// swagger:meta
 package server
 
 import (
@@ -62,31 +47,37 @@ func (s *Server) Start() {
 	e.GET("/", versionHandler.GetVersion)
 
 	// swagger:route GET /version version GetVersion
+	//
 	// responses:
-	//		default: echoHTTPErrorResponse
+	//   default: echoHTTPErrorResponse
 	e.GET("/version", versionHandler.GetVersion)
 
 	// swagger:route GET /groups groups GetGroups
+	//
 	// responses:
-	//		default: echoHTTPErrorResponse
+	//   default: echoHTTPErrorResponse
 	e.GET("/groups", groupsHandler.GetGroups)
 
 	// swagger:route POST /users users CreateUser
+	//
 	// responses:
-	//		default: echoHTTPErrorResponse
+	//   default: echoHTTPErrorResponse
 	e.POST("/users", usersHandler.CreateUser)
 
 	// swagger:route GET /users users GetUsers
+	//
 	// responses:
-	//		default: echoHTTPErrorResponse
+	//   default: echoHTTPErrorResponse
 	e.GET("/users", usersHandler.GetUsers)
 
 	// swagger:route PUT /users/{ID} users PutUser
+	//
 	// responses:
-	//		default: echoHTTPErrorResponse
+	//   default: echoHTTPErrorResponse
 	e.PUT("/users/:id", usersHandler.PutUser)
 
 	// swagger:route DELETE /users/{ID} users DeleteUser
+	//
 	// responses:
 	//   200: emptyOKResponse
 	//	 default: echoHTTPErrorResponse

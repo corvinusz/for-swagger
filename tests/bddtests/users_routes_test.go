@@ -63,7 +63,7 @@ var _ = Describe("Test POST /users", func() {
 	Context("Post predefined user", func() {
 		It("should respond properly", func() {
 			result := new(users.Entity)
-			payload := users.Input{
+			payload := users.UserInput{
 				Login:    "a_test_user_01",
 				Password: "a_test_user_01",
 				GroupID:  10,

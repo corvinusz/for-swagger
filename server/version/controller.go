@@ -1,5 +1,4 @@
 // Package version ...
-// swagger:meta
 package version
 
 import (
@@ -17,28 +16,24 @@ type Handler struct {
 }
 
 // GetVersionBody on GET /version
+//
+// swagger:model
 type GetVersionBody struct {
 	Result     string `json:"result"`
 	Version    string `json:"version"`
 	ServerTime int64  `json:"server_time"`
 }
 
-// OK response
-// swagger:response getVersionResponse
-type versionResponse struct {
-	// in: body
-	Body *GetVersionBody
-}
-
 // GetVersion is a GET /version handler
+//
 // swagger:operation GET /version version GetVersion
-//
-// Returns server version
-//
+// Returns server time and version. Can be used as a healthcheck.
 // ---
 // responses:
-//   '200':
-//     "$ref": "#/responses/getVersionResponse"
+//   200:
+//     description: Get server version.
+//     schema:
+//       $ref: '#/definitions/GetVersionBody'
 func (h *Handler) GetVersion(c echo.Context) error {
 	response := GetVersionBody{
 		Result:     "OK",

@@ -1,5 +1,4 @@
 // Package groups ...
-// swagger:meta
 package groups
 
 import (
@@ -37,7 +36,7 @@ type getGroupParams struct {
 //     schema:
 //       type: array
 //       items:
-//         "$ref": "#/definitions/groupEntity"
+//         $ref: '#/definitions/groupEntity'
 func (h *Handler) GetGroups(c echo.Context) error {
 	// parse parameters
 	params, err := h.getParams(c)
