@@ -17,19 +17,12 @@ type Handler struct {
 }
 
 // swagger:parameters GetGroups
-//in:query
+// in:query
 type getGroupParams struct {
 	Limit  uint64 `json:"limit"`
 	Offset uint64 `json:"offset"`
 	ID     uint64 `json:"id"`
 	Name   string `json:"name"`
-}
-
-// OK response
-// swagger:response getGroupsResponse
-type getGroupsResponse struct {
-	// in: body
-	Groups []Entity
 }
 
 // GetGroups is a GET /groups handler
@@ -39,8 +32,12 @@ type getGroupsResponse struct {
 //
 // ---
 // responses:
-//   '200':
-//     "$ref": "#/responses/getGroupsResponse"
+//   200:
+//     description: returns group array
+//     schema:
+//       type: array
+//       items:
+//         "$ref": "#/definitions/groupEntity"
 func (h *Handler) GetGroups(c echo.Context) error {
 	// parse parameters
 	params, err := h.getParams(c)

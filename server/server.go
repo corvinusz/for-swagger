@@ -88,8 +88,8 @@ func (s *Server) Start() {
 
 	// swagger:route DELETE /users/{ID} users DeleteUser
 	// responses:
-	//		200: echoOKResponse
-	//		default: echoHTTPErrorResponse
+	//   200: emptyOKResponse
+	//	 default: echoHTTPErrorResponse
 	e.DELETE("/users/:id", usersHandler.DeleteUser)
 
 	// start server
