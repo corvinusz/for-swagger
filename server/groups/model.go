@@ -9,7 +9,6 @@ import (
 )
 
 // Entity represents group
-// swagger:model groupEntity
 type Entity struct {
 	ID      uint64 `json:"id" xorm:"'id' pk index autoincr"`
 	Created uint64 `json:"created" xorm:"'created'"`

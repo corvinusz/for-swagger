@@ -1,3 +1,17 @@
+// Package server ...
+// Schemes: http
+// Host: localhost:11011
+// BasePath: /
+// Version: 0.0.1
+// License: MIT
+// Contact: Marat Kagarmanov<mz3corvinus@gmail.com>
+// Consumes:
+// - application/json
+//
+// Produces:
+// - application/json
+//
+// swagger:meta
 package server
 
 import (
@@ -79,7 +93,6 @@ func (s *Server) Start() {
 	// swagger:route DELETE /users/{ID} users DeleteUser
 	//
 	// responses:
-	//   200: emptyOKResponse
 	//	 default: echoHTTPErrorResponse
 	e.DELETE("/users/:id", usersHandler.DeleteUser)
 

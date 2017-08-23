@@ -36,7 +36,7 @@ type getGroupParams struct {
 //     schema:
 //       type: array
 //       items:
-//         $ref: '#/definitions/groupEntity'
+//         $ref: '#/definitions/GroupEntity'
 func (h *Handler) GetGroups(c echo.Context) error {
 	// parse parameters
 	params, err := h.getParams(c)

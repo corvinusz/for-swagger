@@ -16,8 +16,6 @@ type Handler struct {
 }
 
 // GetVersionBody on GET /version
-//
-// swagger:model
 type GetVersionBody struct {
 	Result     string `json:"result"`
 	Version    string `json:"version"`
@@ -25,9 +23,10 @@ type GetVersionBody struct {
 }
 
 // GetVersion is a GET /version handler
-//
 // swagger:operation GET /version version GetVersion
-// Returns server time and version. Can be used as a healthcheck.
+//
+// Returns server time and version, also can be used as a healthcheck
+//
 // ---
 // responses:
 //   200:

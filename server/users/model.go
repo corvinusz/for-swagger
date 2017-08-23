@@ -12,7 +12,6 @@ import (
 )
 
 // Entity represents user
-// swagger:model userEntity
 type Entity struct {
 	ID       uint64        `json:"id" xorm:"'id' pk index autoincr"`
 	Created  uint64        `json:"created" xorm:"'created'"`

@@ -50,7 +50,7 @@ type getUsersParams struct {
 //     schema:
 //       type: array
 //       items:
-//         $ref: '#/definitions/userEntity'
+//         $ref: '#/definitions/UserEntity'
 func (h *Handler) GetUsers(c echo.Context) error {
 	// parse parameters
 	params, err := h.getQueryParams(c)
@@ -82,7 +82,7 @@ type postUsersParams struct {
 //   201:
 //     description: return created user
 //     schema:
-//       $ref: '#/definitions/userEntity'
+//       $ref: '#/definitions/UserEntity'
 func (h *Handler) CreateUser(c echo.Context) error {
 	var (
 		status int
@@ -139,7 +139,7 @@ type putUsersParams struct {
 //   200:
 //     description: return updated user
 //     schema:
-//       $ref: '#/definitions/userEntity'
+//       $ref: '#/definitions/UserEntity'
 func (h *Handler) PutUser(c echo.Context) error {
 	var (
 		input  UserInput
@@ -181,6 +181,16 @@ type deleteUsersParams struct {
 }
 
 // DeleteUser is a DELETE /users/{ID} handler
+// swagger:operation DELETE /users/{ID} users DeleteUser
+//
+// Delete user by ID
+//
+// ---
+// responses:
+//   204:
+//     description: OK
+//   400:
+//     $ref: '#/responses/badRequest'
 func (h *Handler) DeleteUser(c echo.Context) error {
 	var (
 		id     uint64
@@ -200,7 +210,7 @@ func (h *Handler) DeleteUser(c echo.Context) error {
 	if err != nil {
 		return c.String(status, err.Error())
 	}
-	return c.NoContent(http.StatusOK)
+	return c.NoContent(http.StatusNoContent)
 }
 
 //------------------------------------------------------------------------------

@@ -1,0 +1,74 @@
+---
+definitions:
+  ErrorResponse:
+    description: http error response object
+    type: object
+    properties:
+      message:
+        description: HTTP status description
+        type: string
+
+  GetVersionBody:
+    description: Response body on GET /version
+    type: object
+    properties:
+      result:
+        type: string
+      server_time:
+        type: integer
+        format: int64
+      version:
+        type: string
+
+  GroupEntity:
+    description: Entity represents group
+    type: object
+    properties:
+      created:
+        type: integer
+        format: uint64
+      id:
+        type: integer
+        format: uint64
+      name:
+        type: string
+      note:
+        type: string
+      updated:
+        type: integer
+        format: uint64
+
+  UserEntity:
+    description: Entity represents user
+    type: object
+    properties:
+      created:
+        type:   integer
+        format: uint64
+      email:
+        type:   string
+      group:
+        $ref:   '#/definitions/GroupEntity'
+      group_id:
+        type:   integer
+        format: uint64
+      id:
+        type:   integer
+        format: uint64
+      login:
+        type:   string
+      updated:
+        type:   integer
+        format: uint64
+
+responses:
+  echoHTTPErrorResponse:
+    description: invalid request
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+  echoOkResponse:
+    description: standard OK response
+  badRequest:
+    description: Bad request
+    schema:
+      $ref: '#/definitions/ErrorResponse'
