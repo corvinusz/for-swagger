@@ -62,37 +62,37 @@ func (s *Server) Start() {
 
 	// swagger:route GET /version version GetVersion
 	//
-	// responses:
+	// Responses:
 	//   default: echoHTTPErrorResponse
 	e.GET("/version", versionHandler.GetVersion)
 
 	// swagger:route GET /groups groups GetGroups
 	//
-	// responses:
+	// Responses:
 	//   default: echoHTTPErrorResponse
 	e.GET("/groups", groupsHandler.GetGroups)
 
 	// swagger:route POST /users users CreateUser
 	//
-	// responses:
+	// Responses:
 	//   default: echoHTTPErrorResponse
 	e.POST("/users", usersHandler.CreateUser)
 
 	// swagger:route GET /users users GetUsers
 	//
-	// responses:
+	// Responses:
 	//   default: echoHTTPErrorResponse
 	e.GET("/users", usersHandler.GetUsers)
 
 	// swagger:route PUT /users/{ID} users PutUser
 	//
-	// responses:
+	// Responses:
 	//   default: echoHTTPErrorResponse
 	e.PUT("/users/:id", usersHandler.PutUser)
 
 	// swagger:route DELETE /users/{ID} users DeleteUser
 	//
-	// responses:
+	// Responses:
 	//	 default: echoHTTPErrorResponse
 	e.DELETE("/users/:id", usersHandler.DeleteUser)
 
