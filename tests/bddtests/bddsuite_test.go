@@ -42,8 +42,8 @@ var _ = BeforeSuite(func() {
 // })
 
 const (
-	cfgFileName    = "./test-config/test-config.toml"
-	fixturesFolder = "./fixtures"
+	cfgFileName    = "../test-config/test-config.toml"
+	fixturesFolder = "../fixtures"
 )
 
 // setup called once before test
