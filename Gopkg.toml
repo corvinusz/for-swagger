@@ -1,0 +1,40 @@
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/go-resty/resty"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/go-testfixtures/testfixtures"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/go-xorm/xorm"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/labstack/echo"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/mattn/go-sqlite3"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/onsi/ginkgo"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/onsi/gomega"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/pelletier/go-toml"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/sclevine/spec"
+
+[[constraint]]
+  branch = "master"
+  name = "golang.org/x/crypto"

@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/BurntSushi/toml"
 	"github.com/go-xorm/xorm"
+	"github.com/pelletier/go-toml"
 
 	"github.com/corvinusz/for-swagger/server/groups"
 	"github.com/corvinusz/for-swagger/server/users"
@@ -36,7 +36,7 @@ func (a *App) initConfigFromFile(cfgFileName string) error {
 	if err != nil {
 		return errors.New("Configuration file read error: " + cfgFileName + "\nError:" + err.Error())
 	}
-	_, err = toml.Decode(string(tomlData[:]), &a.Context.Config)
+	err = toml.Unmarshal(tomlData, &a.Context.Config)
 	if err != nil {
 		return errors.New("Configuration file decoding error: " + cfgFileName + "\nError:" + err.Error())
 	}
@@ -59,7 +59,7 @@ func (a *App) initORM() error {
 	if err != nil {
 		return err
 	}
-	// SQL on
+	// SQL log on
 	a.Context.Orm.ShowExecTime(true)
 	a.Context.Orm.ShowSQL(true)
 	// sync schema
