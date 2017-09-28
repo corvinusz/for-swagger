@@ -21,25 +21,20 @@ func TestApplication(t *testing.T) {
 	RunSpecs(t, "Bddtests Suite")
 }
 
-// Suite is testing context for suite
-type Suite struct {
+// Sui is testing context for suite
+type Sui struct {
 	app     *app.App
 	baseURL string
 	client  *resty.Client
 }
 
-var suite *Suite
+var suite *Sui
 
 var _ = BeforeSuite(func() {
-	suite = new(Suite)
+	suite = new(Sui)
 	err := suite.setup()
 	Expect(err).NotTo(HaveOccurred())
 })
-
-// var _ = AfterSuite(func() {
-// 	s.app.Context.Orm.Close()
-// 	s.app.Srv.Shutdown()
-// })
 
 const (
 	cfgFileName    = "../test-config/test-config.toml"
@@ -47,7 +42,7 @@ const (
 )
 
 // setup called once before test
-func (s *Suite) setup() error {
+func (s *Sui) setup() error {
 	err := s.setupServer()
 	if err != nil {
 		return err
@@ -61,7 +56,7 @@ func (s *Suite) setup() error {
 }
 
 //------------------------------------------------------------------------------
-func (s *Suite) setupServer() error {
+func (s *Sui) setupServer() error {
 	var err error
 	// init test application
 	s.app, err = app.New(app.CmdFlags{CfgFileName: cfgFileName})
@@ -80,7 +75,7 @@ func (s *Suite) setupServer() error {
 }
 
 //------------------------------------------------------------------------------
-func (s *Suite) waitServerStart(timeout time.Duration) error {
+func (s *Sui) waitServerStart(timeout time.Duration) error {
 	done := time.Now().Add(timeout)
 	for time.Now().Before(done) {
 		c, err := net.Dial("tcp", ":"+s.app.Context.Config.Port)

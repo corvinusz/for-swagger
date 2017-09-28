@@ -12,7 +12,7 @@ import (
 )
 
 var _ = Describe("Test GET /users", func() {
-	Context("Get all users", func() {
+	Context("GET all /users", func() {
 		It("should respond properly", func() {
 			var orig, result []users.Entity
 			// get orig
@@ -23,19 +23,17 @@ var _ = Describe("Test GET /users", func() {
 				Expect(err).NotTo(HaveOccurred())
 				orig[i].Password = ""
 			}
+			Expect(len(orig)).To(BeNumerically(">=", 8))
 			// get resp
 			resp, err := suite.client.R().SetResult(&result).Get("/users")
 			Expect(err).NotTo(HaveOccurred())
-			Expect(http.StatusOK).To(Equal(resp.StatusCode()))
-			Expect(len(orig)).To(BeNumerically(">=", 8))
+			Expect(resp.StatusCode()).To(Equal(http.StatusOK))
+			// check response with DB data
 			Expect(len(result)).To(Equal(len(orig)))
 			Expect(result).To(BeEquivalentTo(orig))
 		})
 	})
-})
-
-var _ = Describe("Test GET /users/:id", func() {
-	Context("with 3 random id", func() {
+	Context("GET one /users/{id}", func() {
 		It("should respond properly", func() {
 			var err error
 			for i := 0; i < 3; i++ {
@@ -50,9 +48,11 @@ var _ = Describe("Test GET /users/:id", func() {
 				// get resp
 				resp, err := suite.client.R().SetResult(&result).Get("/users?id=" + strconv.Itoa(id))
 				Expect(err).NotTo(HaveOccurred())
+				// check response
 				Expect(len(result)).To(Equal(1))
 				Expect(result[0].ID).To(Equal(uint64(id)))
-				Expect(http.StatusOK).To(Equal(resp.StatusCode()))
+				Expect(resp.StatusCode()).To(Equal(http.StatusOK))
+				// check reponse data
 				Expect(&result[0]).To(BeEquivalentTo(orig))
 			}
 		})
@@ -60,7 +60,7 @@ var _ = Describe("Test GET /users/:id", func() {
 })
 
 var _ = Describe("Test POST /users", func() {
-	Context("Post predefined user", func() {
+	Context("POST /users", func() {
 		It("should respond properly", func() {
 			result := new(users.Entity)
 			payload := users.UserInput{
@@ -68,11 +68,11 @@ var _ = Describe("Test POST /users", func() {
 				Password: "a_test_user_01",
 				GroupID:  10,
 			}
-			// http request
+			// make http request
 			resp, err := suite.client.R().SetBody(payload).SetResult(result).Post("/users")
 			Expect(err).NotTo(HaveOccurred())
-			Expect(resp.StatusCode()).To(Equal(http.StatusCreated))
 			// check response
+			Expect(resp.StatusCode()).To(Equal(http.StatusCreated))
 			Expect(result.ID).NotTo(BeZero())
 			Expect(result.Login).To(Equal(payload.Login))
 			Expect(result.Created).NotTo(BeZero())
@@ -82,7 +82,8 @@ var _ = Describe("Test POST /users", func() {
 			orig.ID = result.ID
 			_, err = orig.ExtractFrom(suite.app.Context.Orm)
 			Expect(err).NotTo(HaveOccurred())
-			orig.Password = "" // ... { ... Password string `json:"-"` ... } ...
+			orig.Password = "" // { Password string `json:"-"` }
+			// check user data
 			Expect(result).To(BeEquivalentTo(orig))
 		})
 	})
