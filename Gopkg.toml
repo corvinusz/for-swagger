@@ -1,39 +1,35 @@
 
 [[constraint]]
-  branch = "master"
   name = "github.com/go-resty/resty"
+  version = "1.0.0"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/go-testfixtures/testfixtures"
+  version = "2.4.2"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/go-xorm/xorm"
+  version = "0.6.3"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/labstack/echo"
+  version = "3.2.3"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/mattn/go-sqlite3"
+  version = "1.2.0"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/onsi/ginkgo"
+  version = "1.4.0"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/onsi/gomega"
+  version = "1.2.0"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/pelletier/go-toml"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/sclevine/spec"
+  version = "1.0.0"
 
 [[constraint]]
   branch = "master"

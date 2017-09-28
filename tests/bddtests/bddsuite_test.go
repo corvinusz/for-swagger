@@ -16,22 +16,22 @@ import (
 	"github.com/corvinusz/for-swagger/app"
 )
 
-func TestBddsuite(t *testing.T) {
+func TestApplication(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Bddtests Suite")
 }
 
-// RersTestSuite is testing context for suite
-type RersTestSuite struct {
+// Suite is testing context for suite
+type Suite struct {
 	app     *app.App
 	baseURL string
 	client  *resty.Client
 }
 
-var suite *RersTestSuite
+var suite *Suite
 
 var _ = BeforeSuite(func() {
-	suite = new(RersTestSuite)
+	suite = new(Suite)
 	err := suite.setup()
 	Expect(err).NotTo(HaveOccurred())
 })
@@ -43,11 +43,11 @@ var _ = BeforeSuite(func() {
 
 const (
 	cfgFileName    = "../test-config/test-config.toml"
-	fixturesFolder = "../fixtures"
+	fixturesFolder = "../fixtures/initial"
 )
 
 // setup called once before test
-func (s *RersTestSuite) setup() error {
+func (s *Suite) setup() error {
 	err := s.setupServer()
 	if err != nil {
 		return err
@@ -61,7 +61,7 @@ func (s *RersTestSuite) setup() error {
 }
 
 //------------------------------------------------------------------------------
-func (s *RersTestSuite) setupServer() error {
+func (s *Suite) setupServer() error {
 	var err error
 	// init test application
 	s.app, err = app.New(app.CmdFlags{CfgFileName: cfgFileName})
@@ -80,7 +80,7 @@ func (s *RersTestSuite) setupServer() error {
 }
 
 //------------------------------------------------------------------------------
-func (s *RersTestSuite) waitServerStart(timeout time.Duration) error {
+func (s *Suite) waitServerStart(timeout time.Duration) error {
 	done := time.Now().Add(timeout)
 	for time.Now().Before(done) {
 		c, err := net.Dial("tcp", ":"+s.app.Context.Config.Port)
