@@ -21,3 +21,7 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+# editor artifacts
+*.sublime-project
+*.sublime-workspace
