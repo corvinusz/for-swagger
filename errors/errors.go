@@ -59,18 +59,32 @@ func WrapCode(err error, code int) error {
 	}
 }
 
+// errCoder discribes error with code
+// error value can return error code if it implements it
+type errCoder interface {
+	Code() int
+}
+
 // Code returns error code if applicable or zero otherwise
 func Code(err error) (code int) {
-	type coderer interface {
-		Code() int
+	if err == nil {
+		return 0
 	}
+	ec, ok := err.(errCoder)
+	if !ok {
+		return
+	}
+	return ec.Code()
+}
 
-	for err != nil {
-		coderr, ok := err.(coderer)
-		if !ok {
-			break
-		}
-		code = coderr.Code()
+// CodeMessage returns error code and message if applicable or zero code otherwise
+func CodeMessage(err error) (int, string) {
+	if err == nil {
+		return 0, ""
 	}
-	return
+	ec, ok := err.(errCoder)
+	if !ok {
+		return 0, err.Error()
+	}
+	return ec.Code(), err.Error()
 }

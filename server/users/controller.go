@@ -115,7 +115,7 @@ func (h *Handler) CreateUser(c echo.Context) error {
 
 	err = user.Save(h.C.Orm)
 	if err != nil {
-		return c.String(errors.Code(err), err.Error())
+		return c.String(errors.CodeMessage(err))
 	}
 	return c.JSON(http.StatusCreated, user)
 }
@@ -167,7 +167,7 @@ func (h *Handler) PutUser(c echo.Context) error {
 	// update
 	err = user.Update(h.C.Orm)
 	if err != nil {
-		return c.String(errors.Code(err), err.Error())
+		return c.String(errors.CodeMessage(err))
 	}
 	return c.JSON(http.StatusOK, user)
 }
