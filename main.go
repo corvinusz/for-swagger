@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"os"
+	"os/signal"
 	"runtime"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -30,6 +31,22 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// run
-	a.Run()
+
+	go func() {
+		// here we go
+		a.Run()
+	}()
+
+	// signal control
+	sigstop := make(chan os.Signal)
+	signal.Notify(sigstop, os.Kill, os.Interrupt)
+
+	sig := <-sigstop // wait while server works
+	// caught stop signal
+	if a.C.Logger != nil {
+		a.C.Logger.Println("appcontrol", os.Args[0]+" caught signal "+sig.String())
+	}
+
+	// shutdown server
+	a.Shutdown()
 }

@@ -1,7 +1,7 @@
 package app
 
 import (
-	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -22,7 +22,7 @@ func (a *App) initApp(f CmdFlags) error {
 	}
 
 	// init Logger
-	a.Context.Logger = log.New(os.Stdout, "RERS: ", log.Flags())
+	a.C.Logger = log.New(os.Stdout, os.Args[0]+":", log.Flags())
 
 	// init ORM
 	return a.initORM()
@@ -34,19 +34,19 @@ func (a *App) initConfigFromFile(cfgFileName string) error {
 	// read config
 	tomlData, err := ioutil.ReadFile(cfgFileName)
 	if err != nil {
-		return errors.New("Configuration file read error: " + cfgFileName + "\nError:" + err.Error())
+		return fmt.Errorf("configuration file %s read error: %s", cfgFileName, err.Error())
 	}
-	err = toml.Unmarshal(tomlData, &a.Context.Config)
+	err = toml.Unmarshal(tomlData, &a.C.Config)
 	if err != nil {
-		return errors.New("Configuration file decoding error: " + cfgFileName + "\nError:" + err.Error())
+		return fmt.Errorf("configuration file %s decoding error: %s", cfgFileName, err.Error())
 	}
 
 	// set config default values
-	if len(a.Context.Config.Port) == 0 {
-		a.Context.Config.Port = "11011"
+	if len(a.C.Config.Port) == 0 {
+		a.C.Config.Port = "11011"
 	}
 	// set version
-	a.Context.Config.Version = "0.0.1"
+	a.C.Config.Version = "0.0.1"
 	return nil
 }
 
@@ -55,13 +55,13 @@ func (a *App) initConfigFromFile(cfgFileName string) error {
 func (a *App) initORM() error {
 	var err error
 	// create
-	a.Context.Orm, err = xorm.NewEngine(a.Context.Config.Database.Db, a.Context.Config.Database.Dsn)
+	a.C.Orm, err = xorm.NewEngine(a.C.Config.Database.Db, a.C.Config.Database.Dsn)
 	if err != nil {
-		return err
+		return fmt.Errorf("cannot connect to db %s, error: %s", a.C.Config.Database.Dsn, err.Error())
 	}
 	// SQL log on
-	a.Context.Orm.ShowExecTime(true)
-	a.Context.Orm.ShowSQL(true)
+	a.C.Orm.ShowExecTime(true)
+	a.C.Orm.ShowSQL(true)
 	// sync schema
 	return a.syncSchema()
 }
@@ -69,17 +69,18 @@ func (a *App) initORM() error {
 //------------------------------------------------------------------------------
 // sync Schema
 func (a *App) syncSchema() error {
-	var err error
 	// migrate tables
 	// if err = a.Context.Orm.Sync(new(DbConstant)); err != nil {
 	// 	return err
 	// }
-	if err = a.Context.Orm.Sync(new(groups.Entity)); err != nil {
-		return err
+	err := a.C.Orm.Sync(new(groups.Entity))
+	if err != nil {
+		return fmt.Errorf("cannot operate table 'groups', error: %s", err.Error())
 	}
-	if err = a.Context.Orm.Sync(new(users.Entity)); err != nil {
-		return err
+	err = a.C.Orm.Sync(new(users.Entity))
+	if err != nil {
+		return fmt.Errorf("cannot operate table 'users', error: %s", err.Error())
 	}
 
-	return err
+	return nil
 }
