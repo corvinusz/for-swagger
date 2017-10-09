@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo"
 
 	"github.com/corvinusz/for-swagger/ctx"
+	"github.com/corvinusz/for-swagger/errors"
 	"github.com/corvinusz/for-swagger/utils"
 )
 
@@ -85,10 +86,9 @@ type postUsersParams struct {
 //       $ref: '#/definitions/UserEntity'
 func (h *Handler) CreateUser(c echo.Context) error {
 	var (
-		status int
-		err    error
-		user   Entity
-		input  UserInput
+		err   error
+		user  Entity
+		input UserInput
 	)
 
 	if err = c.Bind(&input); err != nil {
@@ -113,11 +113,11 @@ func (h *Handler) CreateUser(c echo.Context) error {
 		GroupID:  input.GroupID,
 	}
 
-	status, err = user.Save(h.C.Orm)
+	err = user.Save(h.C.Orm)
 	if err != nil {
-		return c.String(status, err.Error())
+		return c.String(errors.Code(err), err.Error())
 	}
-	return c.JSON(status, user)
+	return c.JSON(http.StatusCreated, user)
 }
 
 //------------------------------------------------------------------------------
@@ -142,11 +142,10 @@ type putUsersParams struct {
 //       $ref: '#/definitions/UserEntity'
 func (h *Handler) PutUser(c echo.Context) error {
 	var (
-		input  UserInput
-		user   Entity
-		id     uint64
-		err    error
-		status int
+		input UserInput
+		user  Entity
+		id    uint64
+		err   error
 	)
 	// parse id
 	id, err = strconv.ParseUint(c.Param("id"), 10, 0)
@@ -166,9 +165,9 @@ func (h *Handler) PutUser(c echo.Context) error {
 		Password: input.Password,
 	}
 	// update
-	status, err = user.Update(h.C.Orm)
+	err = user.Update(h.C.Orm)
 	if err != nil {
-		return c.String(status, err.Error())
+		return c.String(errors.Code(err), err.Error())
 	}
 	return c.JSON(http.StatusOK, user)
 }
@@ -193,10 +192,9 @@ type deleteUsersParams struct {
 //     $ref: '#/responses/badRequest'
 func (h *Handler) DeleteUser(c echo.Context) error {
 	var (
-		id     uint64
-		status int
-		err    error
-		user   Entity
+		id   uint64
+		err  error
+		user Entity
 	)
 
 	id, err = strconv.ParseUint(c.Param("id"), 10, 0)
@@ -206,9 +204,9 @@ func (h *Handler) DeleteUser(c echo.Context) error {
 
 	user.ID = id
 	// delete
-	status, err = user.Delete(h.C.Orm)
+	err = user.Delete(h.C.Orm)
 	if err != nil {
-		return c.String(status, err.Error())
+		return c.String(errors.Code(err), err.Error())
 	}
 	return c.NoContent(http.StatusNoContent)
 }
@@ -219,12 +217,12 @@ func (h *Handler) getQueryParams(c echo.Context) (*getUsersParams, error) {
 	qs := c.QueryParams()
 	params := new(getUsersParams)
 	// get id
-	params.ID, err = utils.GetUintParamFromURL(qs, "id", 0)
+	params.ID, err = utils.GetUintQueryParam(qs, "id", 0)
 	if err != nil {
 		return nil, err
 	}
 	// get group_id
-	params.GroupID, err = utils.GetUintParamFromURL(qs, "group_id", 0)
+	params.GroupID, err = utils.GetUintQueryParam(qs, "group_id", 0)
 	if err != nil {
 		return nil, err
 	}

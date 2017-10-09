@@ -16,10 +16,10 @@ var _ = Describe("Test GET /users", func() {
 		It("should respond properly", func() {
 			var orig, result []users.Entity
 			// get orig
-			err := suite.app.Context.Orm.Cols("id").Asc("id").Find(&orig)
+			err := suite.app.C.Orm.Cols("id").Asc("id").Find(&orig)
 			Expect(err).NotTo(HaveOccurred())
 			for i := range orig {
-				_, err = orig[i].ExtractFrom(suite.app.Context.Orm)
+				err = orig[i].ExtractFrom(suite.app.C.Orm)
 				Expect(err).NotTo(HaveOccurred())
 				orig[i].Password = ""
 			}
@@ -42,7 +42,7 @@ var _ = Describe("Test GET /users", func() {
 				result := []users.Entity{}
 				// get orig
 				orig.ID = uint64(id)
-				_, err = orig.ExtractFrom(suite.app.Context.Orm)
+				err = orig.ExtractFrom(suite.app.C.Orm)
 				Expect(err).NotTo(HaveOccurred())
 				orig.Password = ""
 				// get resp
@@ -80,7 +80,7 @@ var _ = Describe("Test POST /users", func() {
 			// get original user
 			orig := new(users.Entity)
 			orig.ID = result.ID
-			_, err = orig.ExtractFrom(suite.app.Context.Orm)
+			err = orig.ExtractFrom(suite.app.C.Orm)
 			Expect(err).NotTo(HaveOccurred())
 			orig.Password = "" // { Password string `json:"-"` }
 			// check user data

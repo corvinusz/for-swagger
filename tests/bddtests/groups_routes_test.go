@@ -16,10 +16,10 @@ var _ = Describe("Test GET /groups", func() {
 		It("should respond properly", func() {
 			var orig, result []groups.Entity
 			// get orig
-			err := suite.app.Context.Orm.Cols("id").Asc("id").Find(&orig)
+			err := suite.app.C.Orm.Cols("id").Asc("id").Find(&orig)
 			Expect(err).NotTo(HaveOccurred())
 			for i := range orig {
-				_, err = orig[i].ExtractFrom(suite.app.Context.Orm)
+				err = orig[i].ExtractFrom(suite.app.C.Orm)
 				Expect(err).NotTo(HaveOccurred())
 			}
 			// get resp
@@ -44,7 +44,7 @@ var _ = Describe("Test GET /groups?id=", func() {
 				result := []groups.Entity{}
 				// get orig
 				orig.ID = properIds[id]
-				_, err = orig.ExtractFrom(suite.app.Context.Orm)
+				err = orig.ExtractFrom(suite.app.C.Orm)
 				Expect(err).NotTo(HaveOccurred())
 				// get resp
 				resp, err := suite.client.R().SetResult(&result).Get("/groups?id=" + strconv.Itoa(int(properIds[id])))

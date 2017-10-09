@@ -1,10 +1,10 @@
 package groups
 
 import (
-	"errors"
 	"net/http"
 	"time"
 
+	"github.com/corvinusz/for-swagger/errors"
 	"github.com/go-xorm/xorm"
 )
 
@@ -36,19 +36,19 @@ func FindByParams(orm *xorm.Engine, params *getGroupParams) ([]Entity, error) {
 }
 
 // ExtractFrom extracts group from database with strict data
-func (e *Entity) ExtractFrom(orm *xorm.Engine) (int, error) {
+func (e *Entity) ExtractFrom(orm *xorm.Engine) error {
 	found, err := orm.Get(e)
 	if err != nil {
-		return http.StatusServiceUnavailable, err
+		return errors.WrapCode(err, http.StatusServiceUnavailable)
 	}
 	if !found {
-		return http.StatusNotFound, errors.New("group not found")
+		return errors.NewWithCode("group not found", http.StatusNotFound)
 	}
-	return http.StatusOK, nil
+	return nil
 }
 
 // Save group
-func (e *Entity) Save(orm *xorm.Engine) (int, error) {
+func (e *Entity) Save(orm *xorm.Engine) error {
 	var (
 		err      error
 		affected int64
@@ -56,10 +56,10 @@ func (e *Entity) Save(orm *xorm.Engine) (int, error) {
 	// check if always exists
 	affected, err = orm.Where("name = ?", e.Name).Count(&Entity{})
 	if err != nil {
-		return http.StatusServiceUnavailable, err
+		return errors.WrapCode(err, http.StatusServiceUnavailable)
 	}
 	if affected != 0 {
-		return http.StatusConflict, errors.New("such name always exists")
+		return errors.NewWithCode("user always exists", http.StatusConflict)
 	}
 	// set CreatedAt
 	e.Created = uint64(time.Now().UTC().Unix())
@@ -67,10 +67,10 @@ func (e *Entity) Save(orm *xorm.Engine) (int, error) {
 	// save to DB
 	affected, err = orm.InsertOne(e)
 	if err != nil {
-		return http.StatusServiceUnavailable, err
+		return errors.WrapCode(err, http.StatusServiceUnavailable)
 	}
 	if affected == 0 {
-		return http.StatusServiceUnavailable, errors.New("db refused to insert group")
+		return errors.NewWithCode("db refused to insert group", http.StatusServiceUnavailable)
 	}
-	return http.StatusCreated, nil
+	return nil
 }

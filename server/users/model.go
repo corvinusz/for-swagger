@@ -1,13 +1,13 @@
 package users
 
 import (
-	"errors"
 	"net/http"
 	"time"
 
 	"github.com/go-xorm/xorm"
 	"golang.org/x/crypto/bcrypt"
 
+	"github.com/corvinusz/for-swagger/errors"
 	"github.com/corvinusz/for-swagger/server/groups"
 )
 
@@ -52,48 +52,45 @@ func FindByParams(orm *xorm.Engine, params *getUsersParams) ([]Entity, error) {
 }
 
 // ExtractFrom extracts user from database
-func (e *Entity) ExtractFrom(orm *xorm.Engine) (int, error) {
-	var status int
-
+func (e *Entity) ExtractFrom(orm *xorm.Engine) error {
 	found, err := orm.Get(e)
 	if err != nil {
-		return http.StatusServiceUnavailable, err
+		return errors.WrapCode(err, http.StatusServiceUnavailable)
 	}
 	if !found {
-		return http.StatusNotFound, errors.New("not found")
+		return errors.WrapCode(err, http.StatusNotFound)
 	}
 	// extract  subobjects
-	if status, err = e.extractGroup(orm); err != nil {
-		return status, err
+	err = e.extractGroup(orm)
+	if err != nil {
+		return err
 	}
-
-	return http.StatusOK, nil
+	return nil
 }
 
 // Save user to database
-func (e *Entity) Save(orm *xorm.Engine) (int, error) {
+func (e *Entity) Save(orm *xorm.Engine) error {
 	var (
 		err      error
-		status   int
 		hash     []byte
 		affected int64
 	)
 	// check if always exists
 	affected, err = orm.Where("login = ?", e.Login).Count(&Entity{})
 	if err != nil {
-		return http.StatusServiceUnavailable, err
+		return errors.WrapCode(err, http.StatusServiceUnavailable)
 	}
 	if affected != 0 {
-		return http.StatusConflict, errors.New("such login always exists")
+		return errors.NewWithCode("such login always exists", http.StatusConflict)
 	}
 	// handle user-group foreign key
-	if status, err = e.extractGroup(orm); err != nil {
-		return status, err
+	if err = e.extractGroup(orm); err != nil {
+		return err
 	}
 	// encrypt password
 	hash, err = bcrypt.GenerateFromPassword([]byte(e.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return http.StatusServiceUnavailable, err
+		return errors.WrapCode(err, http.StatusServiceUnavailable)
 	}
 	e.Password = string(hash[:])
 	// set CreatedAt
@@ -102,39 +99,39 @@ func (e *Entity) Save(orm *xorm.Engine) (int, error) {
 	// save to DB
 	affected, err = orm.InsertOne(e)
 	if err != nil {
-		return http.StatusServiceUnavailable, err
+		return errors.WrapCode(err, http.StatusServiceUnavailable)
 	}
 	if affected == 0 {
-		return http.StatusServiceUnavailable, errors.New("db refused to insert user")
+		return errors.NewWithCode("db refused to save user", http.StatusServiceUnavailable)
 	}
-	return http.StatusCreated, nil
+	return nil
 }
 
 // Update user in database
-func (e *Entity) Update(orm *xorm.Engine) (int, error) {
+func (e *Entity) Update(orm *xorm.Engine) error {
 	var (
-		err      error
 		affected int64
 		hash     []byte
 	)
 	// get old user
 	old := &Entity{ID: e.ID}
-	status, err := old.ExtractFrom(orm)
+	err := old.ExtractFrom(orm)
 	if err != nil {
-		return status, err
+		return err
 	}
 	// process user-group foreign key
 	if e.GroupID == 0 {
 		e.GroupID = old.GroupID
 	}
-	if status, err = e.extractGroup(orm); err != nil {
-		return status, err
+	err = e.extractGroup(orm)
+	if err != nil {
+		return err
 	}
 	// encrypt password
 	if len(e.Password) != 0 {
 		hash, err = bcrypt.GenerateFromPassword([]byte(e.Password), bcrypt.DefaultCost)
 		if err != nil {
-			return http.StatusServiceUnavailable, err
+			return errors.WrapCode(err, http.StatusServiceUnavailable)
 		}
 		e.Password = string(hash[:])
 	}
@@ -143,19 +140,19 @@ func (e *Entity) Update(orm *xorm.Engine) (int, error) {
 	// update
 	affected, err = orm.ID(e.ID).Update(e)
 	if err != nil {
-		return http.StatusServiceUnavailable, err
+		return errors.WrapCode(err, http.StatusServiceUnavailable)
 	}
 	if affected == 0 {
-		return http.StatusServiceUnavailable, errors.New("db refused to update user")
+		return errors.NewWithCode("db refused to update user", http.StatusServiceUnavailable)
 	}
 	if e.Created == 0 {
 		e.Created = old.Created
 	}
-	return http.StatusOK, nil
+	return nil
 }
 
 // Delete user from database
-func (e *Entity) Delete(orm *xorm.Engine) (int, error) {
+func (e *Entity) Delete(orm *xorm.Engine) error {
 	var (
 		err   error
 		found bool
@@ -164,23 +161,23 @@ func (e *Entity) Delete(orm *xorm.Engine) (int, error) {
 	// check if user exists
 	found, err = orm.ID(e.ID).Get(&user)
 	if err != nil {
-		return http.StatusServiceUnavailable, err
+		return errors.WrapCode(err, http.StatusServiceUnavailable)
 	}
 	if !found {
-		return http.StatusNotFound, errors.New("user not found")
+		return errors.NewWithCode("user not found", http.StatusNotFound)
 	}
 	//delete
 	_, err = orm.ID(e.ID).Delete(&Entity{})
 	if err != nil {
-		return http.StatusServiceUnavailable, err
+		return errors.WrapCode(err, http.StatusServiceUnavailable)
 	}
-	return http.StatusOK, nil
+	return nil
 }
 
 //------------------------------------------------------------------------------
-func (e *Entity) extractGroup(orm *xorm.Engine) (int, error) {
+func (e *Entity) extractGroup(orm *xorm.Engine) error {
 	if e.GroupID == 0 {
-		return http.StatusOK, nil
+		return nil
 	}
 	// extract license
 	e.Group.ID = e.GroupID

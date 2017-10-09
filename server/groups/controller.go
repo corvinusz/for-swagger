@@ -57,7 +57,7 @@ func (h *Handler) getParams(c echo.Context) (*getGroupParams, error) {
 	qs := c.QueryParams()
 	params := new(getGroupParams)
 	// get id
-	params.ID, err = utils.GetUintParamFromURL(qs, "id", 0)
+	params.ID, err = utils.GetUintQueryParam(qs, "id", 0)
 	if err != nil {
 		return nil, err
 	}

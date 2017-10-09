@@ -16,7 +16,7 @@ type Config struct {
 	Version string
 }
 
-// Context is a gate to application services
+// Context is an Application context
 type Context struct {
 	Config Config
 	Orm    *xorm.Engine

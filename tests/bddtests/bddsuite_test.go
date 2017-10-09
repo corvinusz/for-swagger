@@ -47,7 +47,7 @@ func (s *Sui) setup() error {
 	if err != nil {
 		return err
 	}
-	s.baseURL = "http://localhost:" + s.app.Context.Config.Port
+	s.baseURL = "http://localhost:" + s.app.C.Config.Port
 	// create and setup resty client
 	s.client = resty.DefaultClient
 	s.client.SetHeader("Content-Type", "application/json")
@@ -64,7 +64,7 @@ func (s *Sui) setupServer() error {
 		return err
 	}
 	// load fixtures
-	err = testfixtures.LoadFixtures(fixturesFolder, s.app.Context.Orm.DB().DB, &testfixtures.SQLite{})
+	err = testfixtures.LoadFixtures(fixturesFolder, s.app.C.Orm.DB().DB, &testfixtures.SQLite{})
 	if err != nil {
 		return err
 	}
@@ -78,7 +78,7 @@ func (s *Sui) setupServer() error {
 func (s *Sui) waitServerStart(timeout time.Duration) error {
 	done := time.Now().Add(timeout)
 	for time.Now().Before(done) {
-		c, err := net.Dial("tcp", ":"+s.app.Context.Config.Port)
+		c, err := net.Dial("tcp", ":"+s.app.C.Config.Port)
 		if err == nil {
 			return c.Close()
 		}

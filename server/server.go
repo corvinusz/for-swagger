@@ -109,7 +109,7 @@ func (s *Server) Start() {
 
 // Shutdown ...
 func (s *Server) Shutdown() error {
-	ctx, cancel := stdctx.WithTimeout(stdctx.Background(), 15*time.Second)
+	ctx, cancel := stdctx.WithTimeout(stdctx.Background(), 5*time.Second)
 	defer cancel()
 	return s.echo.Shutdown(ctx)
 }

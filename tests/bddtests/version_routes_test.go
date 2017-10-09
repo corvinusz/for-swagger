@@ -15,7 +15,7 @@ var _ = Describe("Test /version", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(resp.StatusCode()).To(Equal(200))
 			Expect(result.Result).To(Equal("OK"))
-			Expect(result.Version).To(Equal(suite.app.Context.Config.Version))
+			Expect(result.Version).To(Equal(suite.app.C.Config.Version))
 			Expect(result.ServerTime).NotTo(BeZero())
 		})
 	})
